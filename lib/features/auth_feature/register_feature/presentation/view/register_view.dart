@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_management_app/features/register_feature/presentation/view/widgets/register_view_body.dart';
+import 'package:school_management_app/features/auth_feature/register_feature/presentation/view/widgets/register_view_body.dart';
 
 class RegisterView extends StatelessWidget {
   const RegisterView({super.key});

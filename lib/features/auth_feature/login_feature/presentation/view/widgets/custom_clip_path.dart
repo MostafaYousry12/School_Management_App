@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:school_management_app/features/login_feature/presentation/view/widgets/top_wave_clip.dart';
+import 'package:school_management_app/features/auth_feature/login_feature/presentation/view/widgets/top_wave_clip.dart';
 
 class CustomClipPath extends StatelessWidget {
   const CustomClipPath({super.key, this.clipper, this.height});

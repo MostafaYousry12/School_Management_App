@@ -1,15 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_management_app/core/utils/app_routers.dart';
 import 'package:school_management_app/core/utils/snackbar.dart';
 import 'package:school_management_app/core/utils/styles.dart';
-import 'package:school_management_app/features/login_feature/presentation/view/widgets/custom_buttom.dart';
-import 'package:school_management_app/features/login_feature/presentation/view/widgets/custom_clip_path.dart';
-import 'package:school_management_app/features/login_feature/presentation/view/widgets/custom_text_field.dart';
-import 'package:school_management_app/features/login_feature/presentation/view/widgets/top_wave_clip.dart';
+import 'package:school_management_app/features/auth_feature/login_feature/presentation/view/widgets/custom_buttom.dart';
+import 'package:school_management_app/features/auth_feature/login_feature/presentation/view/widgets/custom_clip_path.dart';
+import 'package:school_management_app/features/auth_feature/login_feature/presentation/view/widgets/custom_text_field.dart';
+import 'package:school_management_app/features/auth_feature/login_feature/presentation/view/widgets/top_wave_clip.dart';
 
 class LoginViewBody extends StatefulWidget {
   const LoginViewBody({super.key});
@@ -68,40 +67,44 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                   ),
                   const SizedBox(height: 10),
                   CustomInput.CustomFormInput(
+                    obscureText: true,
                     icon: const Icon(FontAwesomeIcons.lock),
                     hintText: "Password",
                     onChange: (data) => password = data,
                   ),
                   const SizedBox(height: 20),
-                  CustomButtom(
-                    color: const Color.fromARGB(255, 77, 153, 216),
-                    onTap: () async {
-                      if (formkey.currentState!.validate()) {
-                        try {
-                          setState(() => isLoading = true);
-                          await loginUser();
-                          context.push(AppRouters.kRegisterView);
-                        } on FirebaseAuthException catch (ex) {
-                          if (ex.code == 'user-not-found') {
-                            showsnackBar(
-                                context, "No user found for that email");
-                          } else if (ex.code == 'wrong-password') {
-                            showsnackBar(context,
-                                "Wrong password provided for that user");
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: CustomButtom(
+                      color: Color(0xff005897),
+                      onTap: () async {
+                        if (formkey.currentState!.validate()) {
+                          try {
+                            setState(() => isLoading = true);
+                            await loginUser();
+                            context.push(AppRouters.kRegisterView);
+                          } on FirebaseAuthException catch (ex) {
+                            if (ex.code == 'user-not-found') {
+                              showsnackBar(
+                                  context, "No user found for that email");
+                            } else if (ex.code == 'wrong-password') {
+                              showsnackBar(context,
+                                  "Wrong password provided for that user");
+                            }
+                          } catch (ex) {
+                            showsnackBar(context, "There's an Error");
                           }
-                        } catch (ex) {
-                          showsnackBar(context, "There's an Error");
+                          setState(() => isLoading = false);
                         }
-                        setState(() => isLoading = false);
-                      }
-                    },
-                    ButtomName: "Login",
+                      },
+                      ButtomName: "Sign In",
+                    ),
                   ),
                   const SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("don't Have an Account?",
+                      const Text("don't Have an Account? ",
                           style: Styles.textStyle16),
                       GestureDetector(
                         onTap: () {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_management_app/core/utils/styles.dart';
 
 class CustomButtom extends StatelessWidget {
   CustomButtom({required this.ButtomName, this.onTap, this.color});
@@ -12,11 +13,16 @@ class CustomButtom extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
         ),
         width: double.infinity,
         height: 60,
-        child: Center(child: Text(ButtomName!)),
+        child: Center(
+            child: Text(
+          ButtomName!,
+          style: Styles.textStyle16
+              .copyWith(color: Colors.white, fontWeight: FontWeight.normal),
+        )),
       ),
     );
   }

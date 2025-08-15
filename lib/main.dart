@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:school_management_app/features/login_feature/presentation/view/login_view.dart";
+import "package:school_management_app/features/auth_feature/login_feature/presentation/view/login_view.dart";
 import "package:google_fonts/google_fonts.dart";
 import 'package:school_management_app/core/utils/app_routers.dart';
 
@@ -17,15 +17,17 @@ class Main extends StatelessWidget {
       statusBarColor: Colors.white.withOpacity(.1),
       statusBarIconBrightness: Brightness.light,
     ));
-    return MaterialApp.router(
-      routerConfig: AppRouters.router,
-      theme: ThemeData(
-        textTheme: GoogleFonts.poppinsTextTheme(
-          Theme.of(context).textTheme,
+    return SafeArea(
+      child: MaterialApp.router(
+        routerConfig: AppRouters.router,
+        theme: ThemeData(
+          textTheme: GoogleFonts.poppinsTextTheme(
+            Theme.of(context).textTheme,
+          ),
+          scaffoldBackgroundColor: Colors.white,
         ),
-        scaffoldBackgroundColor: Colors.white,
+        debugShowCheckedModeBanner: false,
       ),
-      debugShowCheckedModeBanner: false,
     );
   }
 }

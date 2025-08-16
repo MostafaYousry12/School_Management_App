@@ -6,8 +6,10 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:google_fonts/google_fonts.dart";
 import 'package:school_management_app/core/utils/app_routers.dart';
+import "package:school_management_app/observe.dart";
 
 void main() async {
+  Bloc.observer = SimpleBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const Main());

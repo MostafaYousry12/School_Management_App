@@ -10,14 +10,18 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> loginUser(
       {required String email, required String password}) async {
     emit(LoginLoading());
-    try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+    if (FirebaseAuth.instance.currentUser!.emailVerified) {
+      try {
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          print('No user found for that email.');
+        } else if (e.code == 'wrong-password') {
+          print('Wrong password provided for that user.');
+        } else {
+          print("Email Need Verification");
+        }
       }
     }
   }

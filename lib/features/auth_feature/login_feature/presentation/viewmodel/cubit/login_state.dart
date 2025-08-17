@@ -13,4 +13,6 @@ final class LoginFailed extends LoginState {
 
 final class LoginSuccess extends LoginState {}
 
+final class LoginNeedVerification extends LoginState {}
+
 final class LoginLoading extends LoginState {}

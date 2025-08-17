@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 
 part 'login_state.dart';
 
@@ -10,19 +11,33 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> loginUser(
       {required String email, required String password}) async {
     emit(LoginLoading());
-    if (FirebaseAuth.instance.currentUser!.emailVerified) {
-      try {
-        await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          print('No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+
+      final user = credential.user;
+
+      if (user != null) {
+        if (user.emailVerified) {
+          emit(LoginSuccess());
         } else {
-          print("Email Need Verification");
+          emit(LoginNeedVerification());
         }
       }
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Wrong password provided for that user.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'Email address is not valid.';
+      } else if (e.code == 'invalid-credential') {
+        errorMessage = 'Invalid credentials. Try again.';
+      } else {
+        errorMessage = 'Authentication error: ${e.message}';
+      }
+      emit(LoginFailed(errorMessage));
     }
   }
 }

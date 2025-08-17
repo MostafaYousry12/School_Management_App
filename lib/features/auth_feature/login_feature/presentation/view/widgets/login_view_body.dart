@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,10 +37,24 @@ class _LoginViewBodyState extends State<LoginViewBody> {
               content: Text("Login successful!"),
             ),
           );
+          GoRouter.of(context).push(AppRouters.kHomeView);
         } else if (state is LoginFailed) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.errMsg)),
           );
+        } else if (state is LoginNeedVerification) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Please Verify"),
+            ),
+          );
+          // AwesomeDialog(
+          //   context: context,
+          //   dialogType: DialogType.error,
+          //   title: "Please Verify",
+          //   btnOkOnPress:
+          //       FirebaseAuth.instance.currentUser!.sendEmailVerification,
+          // ).show();
         }
       },
       builder: (context, state) {
@@ -98,15 +113,12 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                           onTap: () async {
                             if (formkey.currentState!.validate()) {
                               try {
-                                setState(() => isLoading = true);
                                 context.read<LoginCubit>().loginUser(
                                     email: email as String,
                                     password: password as String);
-                                GoRouter.of(context).push(AppRouters.kHomeView);
                               } catch (ex) {
                                 showsnackBar(context, "There's an Error");
                               }
-                              setState(() => isLoading = false);
                             }
                           },
                           ButtomName: "Sign In",
